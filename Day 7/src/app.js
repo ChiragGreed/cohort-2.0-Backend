@@ -4,6 +4,16 @@ const app = express();
 
 app.use(express.json());
 
+
+app.get("/notes",async (req,res)=>{
+   const notes = await notemodel.find();
+
+    res.status(200).json({
+        message:"Notes fetched succesfully",
+        notes});
+})
+
+
 app.post("/notes",async (req,res)=>{
     const {title,description} = req.body;
     
