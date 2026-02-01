@@ -1,6 +1,5 @@
-const app = require('./src/app.js');
-require('dotenv').config();
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 function ConnectToDb() {
     mongoose.connect(process.env.MONGO_URI)
@@ -9,8 +8,4 @@ function ConnectToDb() {
         })
 }
 
-ConnectToDb();
-
-app.listen('4000', () => {
-    console.log("Server is running");
-})
+module.exports = ConnectToDb;
