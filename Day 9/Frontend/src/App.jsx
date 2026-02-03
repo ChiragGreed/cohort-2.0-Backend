@@ -8,7 +8,7 @@ const App = () => {
   const [SelectedNote, setSelectedNote] = useState(null);
 
   function getData() {
-    axios.get('http://localhost:4000/api/notes')
+    axios.get('https://cohort-2-0-backend-5w5h.onrender.com/api/notes')
       .then((res) => {
         setNotes(res.data.notes);
       })
@@ -17,7 +17,7 @@ const App = () => {
   useEffect(() => { getData() }, []);
 
   function postData(title, description) {
-    axios.post("http://localhost:4000/api/notes", {
+    axios.post("https://cohort-2-0-backend-5w5h.onrender.com/api/notes", {
       title: title.value,
       description: description.value
     })
@@ -28,7 +28,7 @@ const App = () => {
   }
 
   function patchData(title, description) {
-    axios.patch(`http://localhost:4000/api/notes/${SelectedNote._id}`, {
+    axios.patch(`https://cohort-2-0-backend-5w5h.onrender.com/api/notes/${SelectedNote._id}`, {
       title: title.value,
       description: description.value
     })
@@ -39,7 +39,7 @@ const App = () => {
   }
 
   function deleteData(note) {
-    axios.delete(`http://localhost:4000/api/notes/${note._id}`)
+    axios.delete(`https://cohort-2-0-backend-5w5h.onrender.com/api/notes/${note._id}`)
       .then((res) => {
         console.log(res.data);
         getData();
