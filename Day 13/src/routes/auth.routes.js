@@ -13,7 +13,7 @@ authRouter.post('/register', async (req, res) => {
 
     const hash = crypto.createHash('md5').update(password).digest('hex');
 
-    const user = await userModel.create({ username, email, password:hash });
+    const user = await userModel.create({ username, email, password: hash });
 
     const token = JWT.sign(
         {
@@ -23,7 +23,7 @@ authRouter.post('/register', async (req, res) => {
         process.env.JWT_SECRET
     )
 
-    res.cookie("jwt_token", token);
+    res.cookie("Token", token);
 
     res.status(201).json({
         message: "User registered",
@@ -31,32 +31,39 @@ authRouter.post('/register', async (req, res) => {
     })
 })
 
-authRouter.post('/protected',(req,res)=>{
-    console.log(req.cookies);
-    res.status(201).json({
-        message:"This is protected"
+authRouter.get('/verify',async (req, res) => {
+
+    const token = req.cookies.Token;
+
+    const decoded = JWT.verify(token, process.env.JWT_SECRET);
+
+    if(!decoded) res.status(401).json({
+        message:"Invalid Token"
     })
 
+    const user = await userModel.findById(decoded.id);
+
+    res.status(200).json({
+        user
+    })
 })
 
-authRouter.post('/login',async (req,res)=>{
-    const {email,password} = req.body;
-    
-    const user = await userModel.findOne({email});
+authRouter.post('/login', async (req, res) => {
+    const { email, password } = req.body;
 
-    if(!user) return res.status(404).json({
-        message:"No registered email found"
+    const user = await userModel.findOne({ email });
+
+    if (!user) return res.status(404).json({
+        message: "No registered email found"
     })
 
     const hash = crypto.createHash('md5').update(password).digest('hex');
-    
+
     const userPasswordCheck = user.password === hash;
 
-    if(!userPasswordCheck) return res.status(401).json({
-        message:"Wrong password"
+    if (!userPasswordCheck) return res.status(401).json({
+        message: "Wrong password"
     })
-    
-    
 
     const token = JWT.sign(
         {
@@ -66,7 +73,7 @@ authRouter.post('/login',async (req,res)=>{
         process.env.JWT_SECRET
     )
 
-    res.cookie("jwt_token", token);
+    res.cookie("Token", token);
 
     res.status(201).json({
         message: "User Loged in",

@@ -4,6 +4,6 @@ require('dotenv').config();
 
 ConnectToDb();
 
-app.listen(7000,(req,res)=>{
+app.listen(7000,()=>{
     console.log("Server running at port 7000");
 })
