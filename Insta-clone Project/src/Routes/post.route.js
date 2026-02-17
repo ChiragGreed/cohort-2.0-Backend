@@ -1,8 +1,16 @@
 const express = require('express');
-const postController = require('postController');
+const multer = require('multer');
+const postController = require('../controllers/post.controller');
 const postRoute =  express.Router();
 
-postRoute.post('/posts',postController.createController)
+
+const storage = multer.memoryStorage();
+const upload = multer({storage:storage});
+const uploadMiddelware = upload.fields([{name:'content',maxcount:1}]);
 
 
-module.exports = postRouter;
+
+postRoute.post('/',uploadMiddelware,postController.createController)
+
+
+module.exports = postRoute;

@@ -1,9 +1,9 @@
 const userModel = require('../models/user.model.js');
 const JWT = require('jsonwebtoken');
-const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 
-async function registerController (req, res){
+async function registerController(req, res) {
     const { username, email, password, bio, profile_image } = req.body;
 
     const isUserAlreadyExist = await userModel.findOne({ $or: [{ username }, { email }] });
@@ -13,7 +13,7 @@ async function registerController (req, res){
             "with this email" : "with this username")
     })
 
-    const hash = crypto.createHash('md5').update(password).digest('hex');
+    const hash = await bcrypt.hash(password, 10);
 
     const user = await userModel.create({ username, email, password: hash, bio, profile_image });
 
@@ -41,21 +41,19 @@ async function registerController (req, res){
 
 }
 
-async function loginController(req, res){
+async function loginController(req, res) {
     const { username, email, password } = req.body;
 
-    const user = await userModel.findOne({$or:[{ username }, { email }]});
+    const user = await userModel.findOne({ $or: [{ username }, { email }] });
 
     if (!user) return res.status(400).json({
         message: "User do not exist"
     })
 
-    const hash = crypto.createHash('md5').update(password).digest('hex');
+    const isValidPassword = await bcrypt.compare(password, user.password);
 
-    const isValidPassword = user.password ===  hash;
-
-    if(!isValidPassword) return res.status(401).json({
-        message:"Wrong password"
+    if (!isValidPassword) return res.status(401).json({
+        message: "Wrong password"
     })
 
     const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
@@ -63,12 +61,12 @@ async function loginController(req, res){
     res.cookie('token', token);
 
     res.status(200).json({
-        message:"User Logged in",
-        user:{
-            id:user._id,
-            username:user.username,
-            password:user.password,
-            bio:user.bio,
+        message: "User Logged in",
+        user: {
+            id: user._id,
+            email:user.email,
+            username: user.username,
+            bio: user.bio,
         }
     })
 

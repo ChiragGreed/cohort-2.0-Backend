@@ -1,15 +1,23 @@
 const postModel = require('../models/post.model.js');
 const userModel = require('../models/user.model.js');
+const ImageKit = require('@imagekit/nodejs');
+const { toFile } = require('@imagekit/nodejs');
 
+
+const client = new ImageKit({
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY
+})
 
 async function createController(req, res) {
-    const { caption, content,userid } = req.body;
+    const fileName = req.files.content[0].originalname;
+    const buffer = req.files.content[0].buffer;
 
-    const user = userModel.findOne({userid});
+    const file = await client.files.upload({
+        file: await toFile(Buffer.from(buffer),'file'),
+        fileName: fileName,
+    });
 
-    if(!user) return res.status(404).json({message:"User id required"});
-    
-    const post = await postModel.create();
+    res.send(file);
 }
 
-module.exports = {postController}
+module.exports = { createController };
