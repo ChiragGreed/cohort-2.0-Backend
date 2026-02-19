@@ -41,6 +41,15 @@ async function registerController(req, res) {
 
 }
 
+async function protected(req, res) {
+    
+    const token = await req.cookies.token;
+
+    const tokenCheck = JWT.verify(token, process.env.JWT_SECRET);
+    
+    res.send(tokenCheck);
+}
+
 async function loginController(req, res) {
     const { username, email, password } = req.body;
 
@@ -64,7 +73,7 @@ async function loginController(req, res) {
         message: "User Logged in",
         user: {
             id: user._id,
-            email:user.email,
+            email: user.email,
             username: user.username,
             bio: user.bio,
         }
@@ -76,5 +85,6 @@ async function loginController(req, res) {
 
 module.exports = {
     registerController,
-    loginController
+    loginController,
+    protected
 }
