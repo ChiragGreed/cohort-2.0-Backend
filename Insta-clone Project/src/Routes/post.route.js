@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const postController = require('../controllers/post.controller');
 const postRoute =  express.Router();
+const VerifyUser = require('../middlewares/auth.middleware.js');
 
 
 
@@ -10,11 +11,11 @@ const uploadMiddelware = upload.fields([{name:'content',maxcount:1}]);
 
 
 
-postRoute.post('/',uploadMiddelware,postController.createController);
+postRoute.post('/',uploadMiddelware,VerifyUser,postController.createController);
 
-postRoute.get('/userPosts',postController.getPosts);
+postRoute.get('/userPosts',VerifyUser,postController.getPosts);
 
-postRoute.get('/postDets/:postid',postController.postDets);
+postRoute.get('/postDets/:postid',VerifyUser,postController.postDets);
 
 
 
