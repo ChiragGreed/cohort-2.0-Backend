@@ -19,7 +19,8 @@ async function registerController(req, res) {
 
     const token = JWT.sign(
         {
-            id: user._id
+            id: user._id,
+            username: user.username
         },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
@@ -41,14 +42,6 @@ async function registerController(req, res) {
 
 }
 
-async function protected(req, res) {
-    
-    const token = await req.cookies.token;
-
-    const tokenCheck = JWT.verify(token, process.env.JWT_SECRET);
-    
-    res.send(tokenCheck);
-}
 
 async function loginController(req, res) {
     const { username, email, password } = req.body;
@@ -65,7 +58,12 @@ async function loginController(req, res) {
         message: "Wrong password"
     })
 
-    const token = JWT.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+    const token = JWT.sign({
+        id: user._id,
+        username: user.username
+    },
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' })
 
     res.cookie('token', token);
 
@@ -86,5 +84,4 @@ async function loginController(req, res) {
 module.exports = {
     registerController,
     loginController,
-    protected
 }
