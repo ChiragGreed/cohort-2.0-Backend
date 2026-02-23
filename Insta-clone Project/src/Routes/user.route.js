@@ -5,6 +5,9 @@ const userController = require('../controllers/user.controller.js');
 
 const userRoute = express.Router();
 
+
+userRoute.post('/follow/requests/:requester',authMiddleware,userController.RequestController);
+
 userRoute.post('/follow/:username',authMiddleware,userController.followUserController);
 userRoute.post('/unfollow/:username',authMiddleware,userController.unfollowUserController);
 
