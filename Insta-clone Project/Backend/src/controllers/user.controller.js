@@ -4,46 +4,6 @@ const postModel = require('../models/post.model.js');
 const likeModel = require('../models/like.model.js');
 
 
-async function RequestController(req, res) {
-    const user = await userModel.findById(req.user.id);
-    const username = user.username;
-
-    const requests = [...user.requests];
-    const requesterUsername = req.params.requester;
-    const requesteExist = requests.includes(requesterUsername);
-
-    if (!requesteExist) return res.status(404).json({
-        message: `Request from ${requesterUsername} not found`
-    })
-
-    const requesterIndex = requests.indexOf(requesterUsername);
-
-
-    requests.splice(requesterIndex, 1);
-
-
-    await userModel.findByIdAndUpdate(req.user.id, { requests: requests });
-
-    const UserResponse = req.body.response;
-    if (UserResponse === "rejected") {
-        return res.status(200).json({
-            message: "Follow request was rejected"
-        })
-    }
-
-    const follow = await followModel.create({
-        follower: requesterUsername,
-        followee: username,
-        status: UserResponse
-    })
-
-    res.status(201).json({
-        message: "Follow request accepted",
-        follow
-    })
-
-}
-
 
 async function followUserController(req, res) {
 
@@ -83,6 +43,45 @@ async function followUserController(req, res) {
 
     res.status(200).json({
         message: "Follow request sent"
+    })
+}
+
+async function RequestController(req, res) {
+    const user = await userModel.findById(req.user.id);
+    const username = user.username;
+
+    const requests = [...user.requests];
+    const requesterUsername = req.params.requester;
+    const requesteExist = requests.includes(requesterUsername);
+
+    if (!requesteExist) return res.status(404).json({
+        message: `Request from ${requesterUsername} not found`
+    })
+
+    const requesterIndex = requests.indexOf(requesterUsername);
+
+
+    requests.splice(requesterIndex, 1);
+
+
+    await userModel.findByIdAndUpdate(req.user.id, { requests: requests });
+
+    const UserResponse = req.body.response;
+    if (UserResponse === "rejected") {
+        return res.status(200).json({
+            message: "Follow request was rejected"
+        })
+    }
+
+    const follow = await followModel.create({
+        follower: requesterUsername,
+        followee: username,
+        status: UserResponse
+    })
+
+    res.status(201).json({
+        message: "Follow request accepted",
+        follow
     })
 
 }
