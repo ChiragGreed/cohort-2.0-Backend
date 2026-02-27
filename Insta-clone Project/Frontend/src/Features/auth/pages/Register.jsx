@@ -1,7 +1,7 @@
-import { Link, Navigate } from 'react-router'
-import '../styles/form.scss'
-import axios from 'axios'
+import { Link, useNavigate } from 'react-router'
 import { useState } from 'react';
+import { useAuth } from '../hooks/useAuth';
+import '../style/form.scss'
 
 
 const Register = () => {
@@ -9,27 +9,21 @@ const Register = () => {
   const [Username, setUsername] = useState('');
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
+  
+  const { registerHandler, Loading } = useAuth();
+  const navigate = useNavigate();
+
+  if (Loading) return <h1>Loading...</h1>
 
   async function submitHandler(e) {
     e.preventDefault();
 
-    try {
+    await registerHandler(Username, Email, Password)
+      .then(res => {
+        console.log(res);
+      });
 
-      const res = await axios.post('http://localhost:3900/api/auth/register', {
-        username: Username,
-        email: Email,
-        password: Password
-      },{withCredentials:true})
-        .then((res) => {
-          console.log(res.data);
-        })
-    }
-
-    catch (err) {
-
-      console.log(err);
-
-    }
+    navigate('/');
 
   }
 
