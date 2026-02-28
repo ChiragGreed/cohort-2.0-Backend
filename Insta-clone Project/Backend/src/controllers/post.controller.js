@@ -36,7 +36,7 @@ async function createController(req, res) {
 
 }
 
-async function getPosts(req, res) {
+async function getPostsController(req, res) {
 
     const userPosts = await postModel.find({ userid: req.user.id });
 
@@ -51,7 +51,7 @@ async function getPosts(req, res) {
 
 }
 
-async function postDets(req, res) {
+async function postDetsController(req, res) {
 
     const { postid } = req.params;
 
@@ -74,4 +74,14 @@ async function postDets(req, res) {
 
 }
 
-module.exports = { createController, getPosts, postDets };
+async function feedController(req, res) {
+    const feed = await postModel.find().populate('userid');
+
+    res.status(200).json({
+        message: "Post fetched successfully",
+        feed
+    })
+
+}
+
+module.exports = { createController, getPostsController, postDetsController,feedController };

@@ -13,20 +13,21 @@ const userSchema = new mongoose.Schema({
     },
     "password": {
         type: String,
-        required: true
+        required: true,
+        select: false
     },
     "bio": String,
     "profile_image": {
         type: String,
-        default: 'https://ik.imagekit.io/lfqmv9rcq/default_pfp.avif'
+        default: 'https://ik.imagekit.io/lfqmv9rcq/default_pfp.jpg'
     },
-    "requests":{
-        type:[String],
-        default:[],
+    "requests": {
+        type: [String],
+        default: [],
     }
 })
 
-userSchema.index({requests:1},{unique:true});
+userSchema.index({ requests: 1 }, { unique: true });
 
 const userModel = mongoose.model('users', userSchema);
 
