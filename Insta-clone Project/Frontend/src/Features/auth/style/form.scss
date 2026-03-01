@@ -1,4 +1,12 @@
+@mixin flex() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 main {
+    @include flex;
     height: 100%;
     width: 100%;
     background: linear-gradient(rgb(25, 29, 36), rgb(40, 47, 59));

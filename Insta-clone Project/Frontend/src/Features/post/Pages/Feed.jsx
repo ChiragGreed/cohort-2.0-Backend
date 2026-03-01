@@ -13,7 +13,7 @@ const Feed = () => {
         feedHandler();
     }, [])
 
-    if (Loading || !Feed) return (
+    if (Loading || !Feed?.length) return (
         <main>
             <h1>Loading feed...</h1>
         </main>

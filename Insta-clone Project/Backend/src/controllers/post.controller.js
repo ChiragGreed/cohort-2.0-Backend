@@ -76,7 +76,6 @@ async function postDetsController(req, res) {
 
 async function feedController(req, res) {
     const feed = await postModel.find().populate('userid');
-
     res.status(200).json({
         message: "Post fetched successfully",
         feed
@@ -84,4 +83,4 @@ async function feedController(req, res) {
 
 }
 
-module.exports = { createController, getPostsController, postDetsController,feedController };
+module.exports = { createController, getPostsController, postDetsController, feedController };
