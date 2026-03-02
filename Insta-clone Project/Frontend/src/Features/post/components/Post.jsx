@@ -10,7 +10,7 @@ const Post = (props) => {
 
             <PostContent content={props.content} />
 
-            <PostFooter caption={props.caption} />
+            <PostFooter isLiked={props.isLiked} caption={props.caption} postid={props.postid} />
 
         </div>
     )

@@ -4,17 +4,15 @@
     align-items: center;
 }
 
-
-.login_page,
-.register_page {
+.createPost_page {
     @include flex;
     height: 100%;
     width: 100%;
-    background: linear-gradient(rgb(25, 29, 36), rgb(40, 47, 59));
+    background: linear-gradient(rgb(23, 25, 27), rgb(25, 26, 27));
     color: white
 }
 
-.form_container {
+.createPost_form_container {
     min-height: 99vh;
     display: flex;
     flex-direction: column;
@@ -41,15 +39,32 @@
             padding-block: 1rem;
             min-width: 17rem;
             border-radius: 3rem;
-            background-color: rgb(31, 36, 45);
-            border: 2px solid rgba(22, 64, 142, 0.791);
+            background-color: rgb(21, 23, 28);
+            border: 2px solid rgba(24, 39, 68, 0.791);
+        }
+
+        label {
+            padding-inline: 7rem;
+            padding-block: 7rem;
+            border-radius: 2rem;
+            background-color: rgb(21, 23, 28);
+            border: 2px solid rgba(24, 39, 68, 0.791);
+            
+            p {
+                color: rgba(255, 255, 255, 0.402);
+            }
+
+            p:hover {
+                text-decoration: underline;
+            }
+
         }
 
         input::placeholder {
             opacity: 1;
         }
 
-        button {
+        .upload_btn {
             background: linear-gradient(to bottom right, rgb(106, 0, 255), rgb(78, 78, 244));
             color: white;
             font-size: 1rem;
@@ -60,19 +75,6 @@
 
         }
 
-
-    }
-
-
-    .auth_Navigate {
-        display: flex;
-        gap: 0.4rem;
-        margin-top: 0.9rem;
-
-        .register_Navigate {
-            text-decoration: none;
-            color: rgb(43, 43, 252);
-        }
 
     }
 }

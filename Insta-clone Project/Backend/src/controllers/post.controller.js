@@ -1,5 +1,6 @@
 const postModel = require('../models/post.model.js');
 const userModel = require('../models/user.model.js');
+const likeModel = require('../models/like.model.js');
 const ImageKit = require('@imagekit/nodejs');
 const { toFile } = require('@imagekit/nodejs');
 
@@ -75,12 +76,24 @@ async function postDetsController(req, res) {
 }
 
 async function feedController(req, res) {
-    const feed = await postModel.find().populate('userid');
+    const username = req.user.username;
+
+    const feed = await Promise.all((await postModel.find().populate('userid').lean())
+        .map(async (post) => {
+
+            const isLiked = await likeModel.findOne({ post: post._id, user: username });
+
+            post.isLiked = Boolean(isLiked);
+
+            return post
+        }))
+
     res.status(200).json({
         message: "Post fetched successfully",
         feed
     })
 
 }
+
 
 module.exports = { createController, getPostsController, postDetsController, feedController };

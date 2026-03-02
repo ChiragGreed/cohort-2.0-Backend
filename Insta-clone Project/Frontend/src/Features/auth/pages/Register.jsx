@@ -9,11 +9,14 @@ const Register = () => {
   const [Username, setUsername] = useState('');
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
-  
+
   const { registerHandler, Loading } = useAuth();
   const navigate = useNavigate();
 
-  if (Loading) return <h1>Loading...</h1>
+  if (Loading) return (
+    <main className='createPost_page'>
+      <h1>Loading...</h1>
+    </main>)
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -29,7 +32,7 @@ const Register = () => {
 
   return (
 
-    <main>
+    <main className='register_page'>
       <div className='form_container'>
         <h2>Register Page</h2>
 

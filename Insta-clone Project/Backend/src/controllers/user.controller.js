@@ -4,6 +4,17 @@ const postModel = require('../models/post.model.js');
 const likeModel = require('../models/like.model.js');
 
 
+async function otherUsersController(req,res) {
+    const user = req.user.username;
+
+    const otherUsers = await userModel.find({ username: { $ne: user }});
+
+    res.status(200).json({
+        message:"Fetched other users",
+        otherUsers
+    })
+}
+
 
 async function followUserController(req, res) {
 
@@ -12,7 +23,7 @@ async function followUserController(req, res) {
 
     const followeeExist = await userModel.findOne({ username: followeeUsername });
 
-    if (!followeeExist) return res.status(200).json({
+    if (!followeeExist) return res.status(404).json({
         message: "User not exist"
     })
 
@@ -113,6 +124,53 @@ async function unfollowUserController(req, res) {
     })
 }
 
+async function getfollowersController(req, res) {
+    const user = req.user.username;
+
+    const followRelation = await followModel.find({ follower: user });
+
+    if (!followRelation) return res.status(404).json({
+        message: `No followers found of ${user}`
+    })
+
+    const followers = await Promise.all(followRelation.map(async (doc) => {
+
+        const follower = await userModel.findOne({ username: doc.follower });
+        return follower;
+
+    }))
+
+
+    res.status(200).json({
+        message: `Followers of ${user} fetched`,
+        followers
+    })
+}
+
+async function getfollowingController(req, res) {
+    const user = req.user.username;
+
+    const followRelation = await followModel.find({ followee: user });
+
+    if (!followRelation) return res.status(404).json({
+        message: `No followings for ${user}`
+    })
+
+    const followings = await Promise.all(followRelation.map(async (doc) => {
+
+        const following = await userModel.findOne({ username: doc.follower });
+        console.log(following);
+        return following;
+
+    }))
+
+
+    res.status(200).json({
+        message: `Followings of ${user} fetched`,
+        followings
+    })
+}
+
 async function likePost(req, res) {
 
     const username = req.user.username;
@@ -165,8 +223,11 @@ async function unlikePost(req, res) {
 }
 
 module.exports = {
+    otherUsersController,
     followUserController,
     unfollowUserController,
+    getfollowersController,
+    getfollowingController,
     likePost,
     unlikePost,
     RequestController

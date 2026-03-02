@@ -6,36 +6,43 @@
 }
 
 
-main {
+.Home_page{
     @include flex;
-    height:fit-content;
-    min-height: 100%;
+    padding-bottom: 3rem;
+    min-height: 100vh;
     width: 100%;
+    color:white;
+    overflow: auto;
     background: linear-gradient(rgb(23, 25, 27), rgb(25, 26, 27));
-    background-color: yellow;
 }
+
+
 
 .feed {
     @include flex(column);
+    background-color: rgb(10, 10, 10);
+    width: 30rem;
 }
 
 
 .post_container {
-    background-color: rgb(10, 10, 10);
     overflow: hidden;
-    margin-block: 0.5rem;
-    width: 30rem;
-    padding-block: 1rem;
-    border-radius: 0.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
+    border-radius: 1rem;
+    padding-block: 1rem;
+    margin-block: 0.4rem;
 }
 
 
 .content {
     // max-height: 70%;
     object-fit: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: rgb(31, 31, 31);
 
     img {
@@ -95,6 +102,10 @@ main {
 
         i {
             font-size: 1.3rem;
+        }
+
+        .liked{
+            color:red;
         }
     }
 }
