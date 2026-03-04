@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { UserContext } from '../userContext';
-import { getFollowersApi, getFollowingApi, otherUsersApi } from '../services/user.api';
+import { getFollowersApi, getFollowingApi, otherUsersApi, followUserApi } from '../services/user.api';
 
 const useUser = () => {
 
@@ -61,7 +61,20 @@ const useUser = () => {
         }
     }
 
-    return { getFollowersHandler, getFollowingHandler, otherUsersHandler, context }
+    async function followUserHandler(user) {
+
+        try {
+            const response = await followUserApi(user);
+            console.log(response.data);
+        }
+
+        catch (err) {
+            console.log(err);
+        }
+
+    }
+
+    return { getFollowersHandler, getFollowingHandler, otherUsersHandler, context, followUserHandler }
 }
 
 

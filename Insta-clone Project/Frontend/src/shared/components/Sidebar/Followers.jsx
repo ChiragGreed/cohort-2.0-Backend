@@ -1,17 +1,14 @@
 import useUser from '../../../Features/user/hooks/useUser'
 import { useEffect } from 'react';
+import '../../main.scss'
+
 
 function Followers() {
 
     const { getFollowersHandler, context } = useUser();
-    const { Loading, Followers } = context;
+    const { Followers } = context;
 
-     if (Loading) return (
-        <div className='followers'>
-            <h1>Loading...</h1>
-        </div>
-    )
-
+    
     useEffect(() => {
         getFollowersHandler()
     }, [])
@@ -23,11 +20,16 @@ function Followers() {
         return Followers.map((profile, idx) => {
             return <div key={idx} className='user_profile'>
 
-                <div className="profile_img">
-                    <img src={profile.profile_image} />
-                </div>
+                 <div className='profile_wrapper'>
+                    
+                    <div className="profile_img">
+                        <img src={profile.profile_image} />
+                    </div>
 
-                <p className="username">{profile.username}</p>
+                    <p className="username">{profile.username}</p>
+                   
+                </div>
+                
                 <button className='follow_btn'>Follow Back</button>
 
             </div>

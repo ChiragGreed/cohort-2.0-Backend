@@ -4,13 +4,8 @@ import { useEffect } from 'react';
 const Followings = () => {
 
   const { getFollowingHandler, context } = useUser();
-  const { Loading, Following } = context;
+  const { Following } = context;
 
-  if (Loading) return (
-    <div className='following'>
-      <h1>Loading...</h1>
-    </div>
-  )
 
   useEffect(() => {
     getFollowingHandler()
@@ -23,11 +18,15 @@ const Followings = () => {
     return Following.map((profile, idx) => {
       return <div key={idx} className='user_profile'>
 
-        <div className="profile_img">
-          <img src={profile.profile_image} />
-        </div>
+        <div className='profile_wrapper'>
 
-        <p className="username">{profile.username}</p>
+          <div className="profile_img">
+            <img src={profile.profile_image} />
+          </div>
+
+          <p className="username">{profile.username}</p>
+
+        </div>
       </div>
     })
   }

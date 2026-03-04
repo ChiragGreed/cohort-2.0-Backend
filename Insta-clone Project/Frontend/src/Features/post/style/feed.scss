@@ -17,11 +17,14 @@
 }
 
 
-
 .feed {
     @include flex(column);
+    position: absolute;
+    top:0%;
+    margin-left:9rem;
     background-color: rgb(10, 10, 10);
-    width: 30rem;
+    width: 56%;
+    min-width: 20rem;
 }
 
 

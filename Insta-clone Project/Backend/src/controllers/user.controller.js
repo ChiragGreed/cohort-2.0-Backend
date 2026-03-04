@@ -53,7 +53,7 @@ async function followUserController(req, res) {
     await userModel.findByIdAndUpdate(followeeExist._id, { requests: requests });
 
     res.status(200).json({
-        message: "Follow request sent"
+        message: "Follow request sent",
     })
 }
 

@@ -2,15 +2,10 @@ import useUser from '../../../Features/user/hooks/useUser'
 import { useEffect } from 'react';
 
 const Suggestions = () => {
-    const { otherUsersHandler, context } = useUser();
-    const { Loading, OtherUsers } = context;
 
 
-    if (Loading) return (
-        <div className='suggestions'>
-            <h1>Loading...</h1>
-        </div>
-    )
+    const { otherUsersHandler, followUserHandler, context } = useUser();
+    const { OtherUsers } = context;
 
     useEffect(() => {
         otherUsersHandler()
@@ -23,13 +18,20 @@ const Suggestions = () => {
         return OtherUsers.map((profile, idx) => {
             return <div key={idx} className='user_profile'>
 
-                <div className="profile_img">
-                    <img src={profile.profile_image} />
+                <div className='profile_wrapper'>
+
+                    <div className="profile_img">
+                        <img src={profile.profile_image} />
+                    </div>
+
+                    <p className="username">{profile.username}</p>
+
                 </div>
 
-                <p className="username">{profile.username}</p>
-
-                <button className='follow_btn'>Follow</button>
+                {/* <div onClick={() => { followUserHandler(profile.username) }} className='request_div'>Request sent</div> */}
+                
+                <button onClick={() => { followUserHandler(profile.username) }} className='follow_btn'>Follow</button>
+                
             </div>
         })
     }

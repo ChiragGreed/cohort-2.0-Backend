@@ -12,7 +12,7 @@ const Feed = () => {
         feedHandler();
     }, [])
 
-    if (Loading || !Feed?.length) return <h1>Loading feed...</h1>
+    if (Loading || !Feed?.length) return;
 
 
     function FeedRender() {

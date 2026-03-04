@@ -3,7 +3,6 @@ import { AuthContext } from "../authContext.jsx";
 import { loginApi, registerApi } from '../services/auth.api';
 
 
-
 export function useAuth() {
     const context = useContext(AuthContext);
     const { setUser, setLoading } = context;

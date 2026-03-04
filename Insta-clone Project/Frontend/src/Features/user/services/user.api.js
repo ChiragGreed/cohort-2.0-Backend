@@ -22,3 +22,7 @@ export async function getFollowingApi() {
     return response;
 }
 
+export async function followUserApi(user){
+    const response = await api.post(`/follow/${user}`);
+    return response;
+}
