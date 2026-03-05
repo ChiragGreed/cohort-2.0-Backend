@@ -27,6 +27,12 @@ const Sidebar = () => {
                 <Followings />
                 <Suggestions />
             </div>
+
+            <div className='requests'>
+                <div>
+                    
+                </div>
+            </div>
         </section>
     )
 }

@@ -5,17 +5,23 @@ const userController = require('../controllers/user.controller.js');
 
 const userRoute = express.Router();
 
-userRoute.get('/otherUsers',authMiddleware,userController.otherUsersController);
 
-userRoute.post('/follow/requests/:requester',authMiddleware,userController.RequestController);
+userRoute.get('/otherUsers', authMiddleware, userController.otherUsers);
 
-userRoute.post('/follow/:username',authMiddleware,userController.followUserController);
-userRoute.post('/unfollow/:username',authMiddleware,userController.unfollowUserController);
-userRoute.get('/getfollowers',authMiddleware,userController.getfollowersController);
-userRoute.get('/getfollowing',authMiddleware,userController.getfollowingController);
+// Request
+userRoute.get('/follow/getRequests', authMiddleware, userController.getRequests);
+userRoute.post('/follow/acceptRequest/:requester', authMiddleware, userController.acceptRequest);
+userRoute.post('/follow/rejectRequest/:requester', authMiddleware, userController.rejectRequest);
 
-userRoute.post('/addLike/:postid',authMiddleware,userController.likePost);
-userRoute.post('/removeLike/:postid',authMiddleware,userController.unlikePost);
+// Follow
+userRoute.get('/getfollowers', authMiddleware, userController.getfollowers);
+userRoute.get('/getfollowing', authMiddleware, userController.getfollowing);
+userRoute.post('/follow/:username', authMiddleware, userController.followUserRequest);
+userRoute.post('/unfollow/:username', authMiddleware, userController.unfollowUser);
+
+// Like
+userRoute.post('/addLike/:postid', authMiddleware, userController.likePost);
+userRoute.post('/removeLike/:postid', authMiddleware, userController.unlikePost);
 
 
-module.exports  = userRoute;
+module.exports = userRoute;

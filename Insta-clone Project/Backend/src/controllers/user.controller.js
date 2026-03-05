@@ -2,93 +2,99 @@ const userModel = require('../models/user.model.js');
 const followModel = require('../models/follow.model.js');
 const postModel = require('../models/post.model.js');
 const likeModel = require('../models/like.model.js');
+const requestModel = require('../models/request.model.js');
 
 
-async function otherUsersController(req,res) {
+async function otherUsers(req, res) {
     const user = req.user.username;
 
-    const otherUsers = await userModel.find({ username: { $ne: user }});
+    const otherUsers = await userModel.find({ username: { $ne: user } });
 
     res.status(200).json({
-        message:"Fetched other users",
+        message: "Fetched other users",
         otherUsers
     })
 }
 
-
-async function followUserController(req, res) {
+async function followUserRequest(req, res) {
 
     const username = req.user.username;
     const followeeUsername = req.params.username;
 
-    const followeeExist = await userModel.findOne({ username: followeeUsername });
+    const followee = await userModel.findOne({ username: followeeUsername });
 
-    if (!followeeExist) return res.status(404).json({
+    if (!followee) return res.status(404).json({
         message: "User not exist"
     })
 
-    const followAlreadyExist = await followModel.findOne({
+    const followRelation = await followModel.findOne({
         follower: username,
         followee: followeeUsername
     });
 
-    if (followAlreadyExist) return res.status(400).json({
+    if (followRelation) return res.status(400).json({
         message: "Already followed"
     })
+
 
     if (username === followeeUsername) return res.status(400).json({
         mesaage: "Can not follow yourself"
     })
 
-    const requests = [...followeeExist.requests];
 
-    const requestAlreadyExist = requests.includes(username);
+    await requestModel.create({ requester: username, requestee: followee.username })
 
-    if (requestAlreadyExist) return res.status(422).json({
-        message: "Follow request already sent"
-    })
 
-    requests.push(username);
 
-    await userModel.findByIdAndUpdate(followeeExist._id, { requests: requests });
+    // const requests = [...followeeExist.requests];
+
+    // const requestAlreadyExist = requests.includes(username);
+
+    // if (requestAlreadyExist) return res.status(422).json({
+    //     message: "Follow request already sent"
+    // })
+
+    // requests.push(username);
+
+    // await userModel.findByIdAndUpdate(followeeExist._id, { requests: requests });
 
     res.status(200).json({
         message: "Follow request sent",
     })
 }
 
-async function RequestController(req, res) {
-    const user = await userModel.findById(req.user.id);
-    const username = user.username;
+async function getRequests(req, res) {
 
-    const requests = [...user.requests];
-    const requesterUsername = req.params.requester;
-    const requesteExist = requests.includes(requesterUsername);
+    const user = req.user.username;
 
-    if (!requesteExist) return res.status(404).json({
-        message: `Request from ${requesterUsername} not found`
+    let requests = await requestModel.find({ requestee: user });
+
+    if (!requests) return res.status(400).json({
+        message: "No follow requests"
     })
 
-    const requesterIndex = requests.indexOf(requesterUsername);
-
-
-    requests.splice(requesterIndex, 1);
-
-
-    await userModel.findByIdAndUpdate(req.user.id, { requests: requests });
-
-    const UserResponse = req.body.response;
-    if (UserResponse === "rejected") {
-        return res.status(200).json({
-            message: "Follow request was rejected"
-        })
-    }
-
-    const follow = await followModel.create({
-        follower: requesterUsername,
-        followee: username,
-        status: UserResponse
+    res.status(200).json({
+        message: "Fetched all follow requestes",
+        requests
     })
+
+}
+
+async function acceptRequest(req, res) {
+    const user = req.user.username;
+    const { requester } = req.params;
+
+    const requestExist = await requestModel.findOne({ requester, requestee: user });
+
+    if (!requestExist) return res.status(404).json({
+        message: `Request not found from ${requester}`
+    })
+
+    await requestModel.findOneAndDelete({ requester, requestee: user });
+
+
+    const follow = await followModel.create({ follower: requester, followee: user });
+    await followModel.findByIdAndUpdate(follow._id, { status: 'accepted' });
 
     res.status(201).json({
         message: "Follow request accepted",
@@ -97,7 +103,25 @@ async function RequestController(req, res) {
 
 }
 
-async function unfollowUserController(req, res) {
+async function rejectRequest(req, res) {
+    const user = req.user.username;
+    const { requester } = req.params;
+
+    const requestExist = await requestModel.findOne({ requester, requestee: user });
+
+    if (!requestExist) return res.status(404).json({
+        message: `Request not found from ${requester}`
+    })
+
+    await requestModel.findOneAndDelete({ requester, requestee: user });
+
+    res.status(200).json({
+        message: "Follow request rejected",
+    })
+
+}
+
+async function unfollowUser(req, res) {
     const username = req.user.username;
     const followeeUsername = req.params.username;
 
@@ -124,7 +148,7 @@ async function unfollowUserController(req, res) {
     })
 }
 
-async function getfollowersController(req, res) {
+async function getfollowers(req, res) {
     const user = req.user.username;
 
     const followRelation = await followModel.find({ follower: user });
@@ -147,7 +171,7 @@ async function getfollowersController(req, res) {
     })
 }
 
-async function getfollowingController(req, res) {
+async function getfollowing(req, res) {
     const user = req.user.username;
 
     const followRelation = await followModel.find({ followee: user });
@@ -223,12 +247,14 @@ async function unlikePost(req, res) {
 }
 
 module.exports = {
-    otherUsersController,
-    followUserController,
-    unfollowUserController,
-    getfollowersController,
-    getfollowingController,
+    otherUsers,
+    followUserRequest,
+    unfollowUser,
+    getfollowers,
+    getfollowing,
     likePost,
     unlikePost,
-    RequestController
+    getRequests,
+    rejectRequest,
+    acceptRequest
 }

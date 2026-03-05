@@ -20,10 +20,6 @@ const userSchema = new mongoose.Schema({
     "profile_image": {
         type: String,
         default: 'https://ik.imagekit.io/lfqmv9rcq/default_pfp.jpg'
-    },
-    "requests": {
-        type: [String],
-        default: [],
     }
 })
 

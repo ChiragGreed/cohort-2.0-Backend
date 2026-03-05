@@ -74,6 +74,10 @@ const useUser = () => {
 
     }
 
+    async function RequestsHandler(){
+        
+    }
+
     return { getFollowersHandler, getFollowingHandler, otherUsersHandler, context, followUserHandler }
 }
 
