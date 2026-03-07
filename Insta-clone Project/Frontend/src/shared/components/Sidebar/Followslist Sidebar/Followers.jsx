@@ -1,37 +1,37 @@
-import useUser from '../../../Features/user/hooks/useUser'
+import useUser from '../../../../Features/user/hooks/useUser';
 import { useEffect } from 'react';
-import '../../main.scss'
 
 
 function Followers() {
 
-    const { getFollowersHandler, context } = useUser();
-    const { Followers } = context;
+    const { getFollowersHandler, getFollowingHandler, followUserHandler, context } = useUser();
+    const { Followers, Following } = context;
 
-    
+
     useEffect(() => {
         getFollowersHandler()
     }, [])
 
     function FollowersRender() {
 
-        if (Followers.length === 0) return;
+        if (!Followers || Followers.length === 0) return;
 
         return Followers.map((profile, idx) => {
+
             return <div key={idx} className='user_profile'>
 
-                 <div className='profile_wrapper'>
-                    
+                <div className='profile_wrapper'>
+
                     <div className="profile_img">
                         <img src={profile.profile_image} />
                     </div>
 
                     <p className="username">{profile.username}</p>
-                   
-                </div>
-                
-                <button className='follow_btn'>Follow Back</button>
 
+                </div>
+
+
+                {(Following.some(user => user.username === profile.username)) ? null : <button onClick={async () => { await followUserHandler(profile.username); getFollowersHandler(); getFollowingHandler() }} className='follow_btn'>Follow Back</button>}
             </div>
         })
     }

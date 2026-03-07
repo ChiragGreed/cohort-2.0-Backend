@@ -36,30 +36,59 @@ async function followUserRequest(req, res) {
         message: "Already followed"
     })
 
+    if (username === followeeUsername) return res.status(400).json({
+        mesaage: "Can not follow yourself"
+    })
+
+    const requestExist = await requestModel.findOne({ requester: username, requestee: followee.username });
+
+    if (requestExist) return res.status(400).json({
+        message: "Request already sent"
+    })
+    const request = await requestModel.create({ requester: username, requestee: followee.username })
+
+
+    res.status(200).json({
+        message: "Follow request sent",
+        request
+    })
+}
+
+async function followUser(req, res) {
+
+    const username = req.user.username;
+    const followeeUsername = req.params.username;
+
+    const followee = await userModel.findOne({ username: followeeUsername });
+
+    if (!followee) return res.status(404).json({
+        message: "User not exist"
+    })
+
+    const followRelation = await followModel.findOne({
+        follower: username,
+        followee: followeeUsername
+    });
+
+    if (followRelation) return res.status(400).json({
+        message: "Already followed"
+    })
 
     if (username === followeeUsername) return res.status(400).json({
         mesaage: "Can not follow yourself"
     })
 
+    try {
+        const request = await requestModel.findOneAndDelete({ requester: username, requestee: followeeUsername });
+    }
+    catch (err) {
 
-    await requestModel.create({ requester: username, requestee: followee.username })
+    }
 
-
-
-    // const requests = [...followeeExist.requests];
-
-    // const requestAlreadyExist = requests.includes(username);
-
-    // if (requestAlreadyExist) return res.status(422).json({
-    //     message: "Follow request already sent"
-    // })
-
-    // requests.push(username);
-
-    // await userModel.findByIdAndUpdate(followeeExist._id, { requests: requests });
+    await followModel.create({ follower: username, followee: followee.username })
 
     res.status(200).json({
-        message: "Follow request sent",
+        message: `Followed ${followeeUsername}`,
     })
 }
 
@@ -67,14 +96,41 @@ async function getRequests(req, res) {
 
     const user = req.user.username;
 
-    let requests = await requestModel.find({ requestee: user });
+    const requestDocs = await requestModel.find({ requestee: user });
 
-    if (!requests) return res.status(400).json({
+    if (!requestDocs) return res.status(400).json({
         message: "No follow requests"
     })
 
+    const requests = await Promise.all(requestDocs.map(async (doc) => {
+        const requester = await userModel.findOne({ username: doc.requester })
+        return requester;
+    }))
+
     res.status(200).json({
         message: "Fetched all follow requestes",
+        requests
+    })
+
+}
+
+async function getSentRequests(req, res) {
+
+    const user = req.user.username;
+
+    const requestDocs = await requestModel.find({ requester: user });
+
+    if (!requestDocs) return res.status(400).json({
+        message: "No follow requests"
+    })
+
+    const requests = await Promise.all(requestDocs.map(async (doc) => {
+        const requester = await userModel.findOne({ username: doc.requestee })
+        return requester;
+    }))
+
+    res.status(200).json({
+        message: "Fetched all follow requestes sent",
         requests
     })
 
@@ -151,48 +207,47 @@ async function unfollowUser(req, res) {
 async function getfollowers(req, res) {
     const user = req.user.username;
 
-    const followRelation = await followModel.find({ follower: user });
+    const followRelation = await followModel.find({ followee: user });
 
-    if (!followRelation) return res.status(404).json({
-        message: `No followers found of ${user}`
-    })
+    if (followRelation.length === 0) {
+        return res.status(204).json({
+            message: `No followers found for ${user}`
+        });
+    }
 
-    const followers = await Promise.all(followRelation.map(async (doc) => {
-
-        const follower = await userModel.findOne({ username: doc.follower });
-        return follower;
-
-    }))
-
+    const followers = await Promise.all(
+        followRelation.map(async (doc) => {
+            return await userModel.findOne({ username: doc.follower });
+        })
+    );
 
     res.status(200).json({
         message: `Followers of ${user} fetched`,
         followers
-    })
+    });
 }
 
 async function getfollowing(req, res) {
     const user = req.user.username;
 
-    const followRelation = await followModel.find({ followee: user });
+    const followRelation = await followModel.find({ follower: user });
 
-    if (!followRelation) return res.status(404).json({
-        message: `No followings for ${user}`
-    })
+    if (followRelation.length === 0) {
+        return res.status(404).json({
+            message: `No followings for ${user}`
+        });
+    }
 
-    const followings = await Promise.all(followRelation.map(async (doc) => {
-
-        const following = await userModel.findOne({ username: doc.follower });
-        console.log(following);
-        return following;
-
-    }))
-
+    const followings = await Promise.all(
+        followRelation.map(async (doc) => {
+            return await userModel.findOne({ username: doc.followee });
+        })
+    );
 
     res.status(200).json({
         message: `Followings of ${user} fetched`,
         followings
-    })
+    });
 }
 
 async function likePost(req, res) {
@@ -249,12 +304,14 @@ async function unlikePost(req, res) {
 module.exports = {
     otherUsers,
     followUserRequest,
+    followUser,
     unfollowUser,
     getfollowers,
     getfollowing,
     likePost,
     unlikePost,
     getRequests,
+    getSentRequests,
     rejectRequest,
     acceptRequest
 }

@@ -5,10 +5,54 @@
     flex-direction: $direction;
 }
 
+// Theme variables 
+
+:root {
+
+    // DARK MODE DEFAULT 
+
+    --bg-main: linear-gradient(rgb(23, 25, 27), rgb(25, 26, 27));
+    --bg-secondary: rgb(18, 18, 18);
+    --bg-card: rgb(10, 10, 10);
+
+    --text-primary: white;
+
+    --border-light: rgba(255, 255, 255, 0.078);
+    --border-hover: rgba(255, 255, 255, 0.228);
+
+    --btn-gradient: linear-gradient(to bottom right, rgb(106, 0, 255), rgb(78, 78, 244));
+}
+
+// LIGHT MODE 
+
+.light {
+
+    --bg-main: linear-gradient(rgb(245, 245, 245), rgb(230, 230, 230));
+    --bg-secondary: rgb(255, 255, 255);
+    --bg-card: rgb(248, 248, 248);
+
+    --text-primary: rgb(20, 20, 20);
+
+    --border-light: rgba(0, 0, 0, 0.1);
+    --border-hover: rgba(0, 0, 0, 0.2);
+}
+
+// Global 
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+* {
+    scrollbar-width: none;
+    scrollbar-color: transparent;
+
+    i,
+    button {
+        cursor: pointer;
+    }
 }
 
 html,
@@ -16,7 +60,8 @@ body,
 #root {
     height: 100%;
     width: 100%;
-    background: linear-gradient(rgb(23, 25, 27), rgb(25, 26, 27));
+    font-size: clamp(0.5rem, 4vw, 1rem);
+    color: var(--text-primary);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -24,19 +69,54 @@ html::-webkit-scrollbar {
     display: none;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
+// Navbar 
+
 nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     padding: 0.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.078);
-    opacity: 1;
-    background-color: rgb(18, 18, 18);
+    padding-inline: 1rem;
+    border-top: 1px solid var(--border-light);
+    background-color: var(--bg-secondary);
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    z-index: 9;
 
+    .appLogo {
+        @include flex;
+
+        img {
+            height: 3rem;
+            width: 3rem;
+        }
+
+        h1 {
+            font-weight: 400;
+            font-size: 1.3rem;
+            background-image: url('https://static.vecteezy.com/system/resources/previews/002/486/289/original/gradient-background-instagram-free-vector.jpg');
+            background-size: cover;
+            background-position: center;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+
+    .themetoggle_btn {
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+        border: none;
+        font-size: 1.5rem;
+        white-space: nowrap;
+        transition: 0.5s all;
+    }
 
     .create_post_wrapper {
         display: flex;
@@ -46,48 +126,72 @@ nav {
         gap: 0.2rem;
 
         i {
-            border: 1px solid white;
+            border: 1px solid var(--text-primary);
             border-radius: 50%;
-            color: white;
+            color: var(--text-primary);
             font-size: 1.2rem;
         }
 
         button {
-            background-color: rgb(18, 18, 18);
-            color: white;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
             border: none;
             white-space: nowrap;
+            transition: 0.5s all;
+        }
 
-
+        button:hover {
+            border: 1px solid var(--border-hover);
+            padding-inline: 0.4rem;
         }
     }
-
 }
+
+// Sidebar 
 
 .sidebar_component {
     position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     left: 0;
     top: 0;
     bottom: 0;
     padding: 1rem;
-    overflow: hidden;
-    border-right: 1px solid rgba(255, 255, 255, 0.078);
-    background-color: rgb(18, 18, 18);
+    overscroll-behavior: contain;
+    overflow-y: auto;
+    overflow-x: hidden;
 
-    .followlist_btn {
+    border-right: 1px solid var(--border-light);
+    background-color: var(--bg-secondary);
+
+    .followlist_btn,
+    .requestlist_btn {
         transition: 0.5s all;
         font-size: 1.2rem;
-        background-color: black;
+        background-color: var(--bg-card);
         border: none;
-        color: white;
-        transform: rotate(90deg);
+        color: var(--text-primary);
+    }
+
+    .followlist_btn:hover,
+    .requestlist_btn:hover {
+        border: 1px solid var(--border-hover);
+        padding-inline: 0.4rem;
+    }
+
+    .followlist_btn:active,
+    .requestlist_btn:active {
+        padding-inline: 0.4rem;
+        border: 0px solid var(--border-hover);
     }
 
     h3 {
         margin-top: 3rem;
         font-weight: 600;
         padding-bottom: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.123);
+        border-bottom: 1px solid var(--border-light);
     }
 
     .user_profile {
@@ -121,8 +225,11 @@ nav {
             font-size: 1rem;
         }
 
-        .follow_btn {
-            background: linear-gradient(to bottom right, rgb(106, 0, 255), rgb(78, 78, 244));
+        .follow_btn,
+        .accept_btn,
+        .reject_btn,
+        .request_div {
+            background: var(--btn-gradient);
             color: white;
             font-weight: 600;
             font-size: 0.7rem;
@@ -132,29 +239,27 @@ nav {
             border: none;
         }
 
+        .reject_btn {
+            background: linear-gradient(to bottom right, rgb(17, 17, 17), rgb(33, 33, 33));
+        }
 
-
+        .request_div {
+            border: 1px solid var(--border-hover);
+            padding-inline: 0.4rem;
+            background: linear-gradient(to bottom right, rgb(17, 17, 17), rgb(33, 33, 33));
+        }
     }
-
-
-
 }
+
+// Sidebar collapsed 
 
 .sidebar_component.collapsed {
     width: 60px;
-    
+    justify-content: center;
+    gap: 10%;
 
-    .followlist_btn {
-        transform: rotate(0deg);
-    }
-
-
-    h3 {
+    .Followlist,
+    .Requestlist {
         display: none;
-    }
-
-    .user_profile {
-        display: none;
-
     }
 }

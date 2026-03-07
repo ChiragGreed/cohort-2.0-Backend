@@ -1,38 +1,51 @@
 import '../../main.scss'
-import useUser from '../../../Features/user/hooks/useUser'
-
-
-import Followers from './Followers';
-import Followings from './Followings';
-import Suggestions from './Suggestions';
-import { useState } from 'react';
+import { useState } from 'react'
+import Followslist from './Followslist Sidebar/Followslist'
+import RequestsList from './Requests'
 
 const Sidebar = () => {
-    const [Collapsed, setCollapsed] = useState(false);
 
-    function resize() {
-        Collapsed ? setCollapsed(false) : setCollapsed(true);
+    const [Collapsed, setCollapsed] = useState(true)
+    const [activeList, setActiveList] = useState(null)
+
+    function SidebarContentCall(list) {
+        setActiveList(list)
+        if (Collapsed) setCollapsed(false)
+        else {
+            setCollapsed(true);
+            setActiveList(null);
+        }
     }
 
+    function SidbarContentRender() {
+        if (activeList === 'followlist') return <Followslist />
+        if (activeList === 'requestlist') return <RequestsList />
+        return null
+    }
 
     return (
         <section className={`sidebar_component ${Collapsed ? "collapsed" : ""}`}>
 
-            <button onClick={resize} className="followlist_btn">
-                <i className="ri-bar-chart-line"></i>
-            </button>
+            {(!activeList || activeList === "followlist") &&
+                <button
+                    onClick={() => SidebarContentCall('followlist')}
+                    className="followlist_btn"
+                >
+                    <i className="ri-bar-chart-line"></i>
+                </button>
+            }
 
-            <div className='Followlist'>
-                <Followers />
-                <Followings />
-                <Suggestions />
-            </div>
+            {(!activeList || activeList === "requestlist") &&
+                <button
+                    onClick={() => SidebarContentCall('requestlist')}
+                    className="requestlist_btn"
+                >
+                    <i className="ri-notification-4-line"></i>
+                </button>
+            }
 
-            <div className='requests'>
-                <div>
-                    
-                </div>
-            </div>
+            <SidbarContentRender />
+
         </section>
     )
 }

@@ -17,3 +17,9 @@ export async function loginApi(username, password) {
     
     return response.data;
 }
+
+export async function protectedApi(){
+    const response = await api.get('/protected');
+    return response.data;
+}
+

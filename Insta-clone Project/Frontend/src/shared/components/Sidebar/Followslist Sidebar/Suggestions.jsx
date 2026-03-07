@@ -1,14 +1,15 @@
-import useUser from '../../../Features/user/hooks/useUser'
+import useUser from '../../../../Features/user/hooks/useUser';
 import { useEffect } from 'react';
 
 const Suggestions = () => {
 
 
-    const { otherUsersHandler, followUserHandler, context } = useUser();
-    const { OtherUsers } = context;
+    const { otherUsersHandler, followUserRequestHandler, getSentRequestsHandler, context } = useUser();
+    const { OtherUsers, Following, SentRequests } = context;
 
     useEffect(() => {
-        otherUsersHandler()
+        otherUsersHandler();
+        getSentRequestsHandler();
     }, [])
 
     function SuggestionsRender() {
@@ -16,6 +17,8 @@ const Suggestions = () => {
         if (OtherUsers.length === 0) return;
 
         return OtherUsers.map((profile, idx) => {
+
+            if (Following.some(user => user.username === profile.username)) return null;
             return <div key={idx} className='user_profile'>
 
                 <div className='profile_wrapper'>
@@ -28,11 +31,15 @@ const Suggestions = () => {
 
                 </div>
 
-                {/* <div onClick={() => { followUserHandler(profile.username) }} className='request_div'>Request sent</div> */}
-                
-                <button onClick={() => { followUserHandler(profile.username) }} className='follow_btn'>Follow</button>
-                
+
+                {SentRequests.some(req => req.requestee === profile.username) ?
+                    <div onClick={async () => { followUserHandler(profile.username) }} className='request_div'>Request sent</div>
+                    :
+                    <button onClick={async () => { await followUserRequestHandler(profile.username) }} className='follow_btn'>Follow</button>
+                }
+
             </div>
+
         })
     }
 

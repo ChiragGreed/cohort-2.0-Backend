@@ -3,7 +3,7 @@ const JWT = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 
-async function registerController(req, res) {
+async function register(req, res) {
     const { username, email, password, bio, profile_image } = req.body;
 
     const isUserAlreadyExist = await userModel.findOne({ $or: [{ username }, { email }] });
@@ -42,8 +42,7 @@ async function registerController(req, res) {
 
 }
 
-
-async function loginController(req, res) {
+async function login(req, res) {
     const { username, email, password } = req.body;
 
     const user = await userModel.findOne({ $or: [{ username }, { email }] }).select("+password");
@@ -81,7 +80,20 @@ async function loginController(req, res) {
 
 }
 
+async function protected(req,res){
+    const {token} = req.cookies;
+    
+    if(!token) return res.status(401).json({
+        message:"Token not found"
+    })
+
+    res.status(200).json({
+        message:"Access granted"
+    })
+}
+
 module.exports = {
-    registerController,
-    loginController,
+    register,
+    login,
+    protected
 }

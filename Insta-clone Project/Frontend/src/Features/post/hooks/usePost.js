@@ -9,7 +9,7 @@ import { createPostApi } from "../services/post.api";
 const usePost = () => {
     const context = useContext(PostContext);
 
-    const { setLoading, setFeed, Feed } = context;
+    const { setLoading, setFeed } = context;
 
     async function feedHandler() {
 
@@ -20,7 +20,7 @@ const usePost = () => {
             setFeed(feedData.data.feed.reverse());
         }
         catch (err) {
-            throw err;
+            return err;
         }
         finally {
             setLoading(false);
@@ -56,7 +56,7 @@ const usePost = () => {
         setLoading(true);
 
         try {
-            const response = await createPostApi(file, caption);
+            await createPostApi(file, caption);
         }
         catch (err) {
             throw err

@@ -1,21 +1,22 @@
 import useUser from '../../../Features/user/hooks/useUser'
 import { useEffect } from 'react';
 
-const Suggestions = () => {
+const RequestsList = () => {
 
 
-    const { otherUsersHandler, followUserHandler, context } = useUser();
-    const { OtherUsers } = context;
+    const { getRequestsHandler, acceptRequestHandler, rejectRequestHandler, context } = useUser();
+    const { Requests } = context;
 
     useEffect(() => {
-        otherUsersHandler()
+        getRequestsHandler()
     }, [])
+
+    if (Requests.length === 0) return;
 
     function RequestRender() {
 
-        if (OtherUsers.length === 0) return;
+        return Requests.map((profile, idx) => {
 
-        return OtherUsers.map((profile, idx) => {
             return <div key={idx} className='user_profile'>
 
                 <div className='profile_wrapper'>
@@ -28,14 +29,16 @@ const Suggestions = () => {
 
                 </div>
 
-                <div onClick={() => { followUserHandler(profile.username) }} className='request_div'>Request sent</div>
+                <div onClick={async () => { await acceptRequestHandler(profile.username); getRequestsHandler() }} className='accept_btn'>Accept</div>
+                <div onClick={async () => { await rejectRequestHandler(profile.username); getRequestsHandler() }} className='reject_btn'>Reject</div>
 
             </div>
         })
+
     }
 
     return (
-        <div className='Requests'>
+        <div className='Requestlist'>
 
             <h3>Requests</h3>
 
@@ -45,4 +48,4 @@ const Suggestions = () => {
     )
 }
 
-export default Suggestions
+export default RequestsList

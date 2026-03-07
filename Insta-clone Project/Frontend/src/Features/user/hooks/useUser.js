@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { UserContext } from '../userContext';
-import { getFollowersApi, getFollowingApi, otherUsersApi, followUserApi } from '../services/user.api';
+import { getFollowersApi, getFollowingApi, otherUsersApi, followUserApi, getRequestesApi, acceptRequestApi, rejectRequestApi, followUserRequestApi, getSentRequestesApi } from '../services/user.api';
 
 const useUser = () => {
 
     const context = useContext(UserContext);
-    const { setLoading, setFollowers, setFollowing, setOtherUsers } = context;
+    const { setLoading, setFollowers, setFollowing, setOtherUsers, setRequests, setSentRequests, SentRequests } = context;
 
     async function getFollowersHandler() {
 
@@ -17,7 +17,7 @@ const useUser = () => {
         }
 
         catch (err) {
-            throw err
+            return err
         }
 
         finally {
@@ -35,7 +35,7 @@ const useUser = () => {
         }
 
         catch (err) {
-            throw err
+            return err
         }
 
         finally {
@@ -50,6 +50,7 @@ const useUser = () => {
         try {
             const response = await otherUsersApi();
             setOtherUsers(response.data.otherUsers);
+
         }
 
         catch (err) {
@@ -59,6 +60,19 @@ const useUser = () => {
         finally {
             setLoading(false);
         }
+    }
+
+    async function followUserRequestHandler(user) {
+
+        try {
+            await followUserRequestApi(user);
+            setSentRequests(prev => [...prev, { requestee: user }]);
+        }
+
+        catch (err) {
+            console.log(err);
+        }
+
     }
 
     async function followUserHandler(user) {
@@ -74,11 +88,57 @@ const useUser = () => {
 
     }
 
-    async function RequestsHandler(){
-        
+    async function getRequestsHandler() {
+
+        try {
+            const response = await getRequestesApi();
+            setRequests(response.data.requests);
+        }
+        catch (err) {
+            return err;
+        }
     }
 
-    return { getFollowersHandler, getFollowingHandler, otherUsersHandler, context, followUserHandler }
+    async function getSentRequestsHandler() {
+
+        try {
+            const response = await getSentRequestesApi();
+            setSentRequests(response.data.requests);
+
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
+    async function acceptRequestHandler(user) {
+
+        try {
+            const response = await acceptRequestApi(user);
+            console.log(response.data);
+        }
+
+        catch (err) {
+            console.log(err);
+        }
+
+    }
+
+    async function rejectRequestHandler(user) {
+
+        try {
+            const response = await rejectRequestApi(user);
+            console.log(response.data);
+        }
+
+        catch (err) {
+            console.log(err);
+        }
+
+    }
+
+
+    return { getFollowersHandler, getFollowingHandler, otherUsersHandler, followUserRequestHandler, followUserHandler, getRequestsHandler, getSentRequestsHandler, acceptRequestHandler, rejectRequestHandler, context }
 }
 
 

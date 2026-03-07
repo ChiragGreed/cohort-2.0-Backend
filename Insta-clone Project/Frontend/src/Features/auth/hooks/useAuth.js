@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../authContext.jsx";
-import { loginApi, registerApi } from '../services/auth.api';
+import { loginApi, protectedApi, registerApi } from '../services/auth.api';
+import { useNavigate } from "react-router-dom";
 
 
 export function useAuth() {
@@ -43,5 +44,18 @@ export function useAuth() {
 
     }
 
-    return {context, registerHandler, loginHandler};
+    async function protectedHandler() {
+
+        try {
+            await protectedApi();
+            return true;
+
+        }
+        catch (err) {
+            return false;
+        }
+
+    }
+
+    return { context, registerHandler, loginHandler, protectedHandler };
 }

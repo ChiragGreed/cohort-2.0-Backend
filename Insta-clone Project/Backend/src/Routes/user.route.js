@@ -10,13 +10,15 @@ userRoute.get('/otherUsers', authMiddleware, userController.otherUsers);
 
 // Request
 userRoute.get('/follow/getRequests', authMiddleware, userController.getRequests);
+userRoute.get('/follow/getSentRequests', authMiddleware, userController.getSentRequests);
 userRoute.post('/follow/acceptRequest/:requester', authMiddleware, userController.acceptRequest);
 userRoute.post('/follow/rejectRequest/:requester', authMiddleware, userController.rejectRequest);
 
 // Follow
 userRoute.get('/getfollowers', authMiddleware, userController.getfollowers);
 userRoute.get('/getfollowing', authMiddleware, userController.getfollowing);
-userRoute.post('/follow/:username', authMiddleware, userController.followUserRequest);
+userRoute.post('/followRequest/:username', authMiddleware, userController.followUserRequest);
+userRoute.post('/follow/:username', authMiddleware, userController.followUser);
 userRoute.post('/unfollow/:username', authMiddleware, userController.unfollowUser);
 
 // Like

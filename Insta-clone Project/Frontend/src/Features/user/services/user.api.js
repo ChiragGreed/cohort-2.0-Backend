@@ -22,7 +22,32 @@ export async function getFollowingApi() {
     return response;
 }
 
-export async function followUserApi(user){
+export async function followUserRequestApi(user) {
+    const response = await api.post(`/followRequest/${user}`);
+    return response;
+}
+
+export async function followUserApi(user) {
     const response = await api.post(`/follow/${user}`);
+    return response;
+}
+
+export async function getRequestesApi() {
+    const response = await api.get('follow/getRequests');
+    return response;
+}
+
+export async function getSentRequestesApi() {
+    const response = await api.get('follow/getSentRequests');
+    return response;
+}
+
+export async function acceptRequestApi(user) {
+    const response = await api.post(`/follow/acceptRequest/${user}`);
+    return response;
+}
+
+export async function rejectRequestApi(user) {
+    const response = await api.post(`/follow/rejectRequest/${user}`);
     return response;
 }

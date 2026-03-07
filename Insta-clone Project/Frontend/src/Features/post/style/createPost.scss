@@ -12,6 +12,19 @@
     color: white
 }
 
+.back_btn {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    background: linear-gradient(to bottom right, rgb(106, 0, 255), rgb(78, 78, 244));
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5rem;
+    padding-inline: 0.7rem;
+    padding-block: 0.5rem;
+}
+
 .createPost_form_container {
     min-height: 99vh;
     display: flex;
@@ -37,19 +50,22 @@
             color: white;
             padding-inline: 1.5rem;
             padding-block: 1rem;
-            min-width: 17rem;
+            width: min(90vw, 22rem);
             border-radius: 3rem;
             background-color: rgb(21, 23, 28);
             border: 2px solid rgba(24, 39, 68, 0.791);
         }
 
         label {
-            padding-inline: 7rem;
-            padding-block: 7rem;
+            width: min(90vw, 22rem);
+            height: 12rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border-radius: 2rem;
             background-color: rgb(21, 23, 28);
             border: 2px solid rgba(24, 39, 68, 0.791);
-            
+
             p {
                 color: rgba(255, 255, 255, 0.402);
             }

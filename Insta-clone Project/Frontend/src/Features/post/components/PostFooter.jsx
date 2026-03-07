@@ -2,7 +2,7 @@ import usePost from "../hooks/usePost"
 
 const PostFooter = (props) => {
 
-    const { addLikeHandler, removeLikeHandler, context } = usePost();
+    const { addLikeHandler, removeLikeHandler } = usePost();
 
 
     return (

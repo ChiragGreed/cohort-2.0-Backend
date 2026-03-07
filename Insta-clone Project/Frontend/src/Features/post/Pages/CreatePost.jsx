@@ -34,16 +34,20 @@ const CreatePost = () => {
     return (
         <main className='createPost_page'>
 
+            <button onClick={() => { navigate('/') }} className='back_btn'><i className="ri-arrow-left-line"></i></button>
+
             <div className='createPost_form_container'>
-                
+
                 <form onSubmit={(e) => submitHandler(e)}>
-                    
-                    <label htmlFor="file_upload" ><p>Select File</p></label>
+
+                    <label htmlFor="file_upload" ><p>Select image file </p></label>
+
                     <input hidden type="file" ref={PostFileRef} id="file_upload" />
-                    <input onChange={(e) => { setCaption(e.target.value) }} value={Caption} type="text" name="caption" placeholder='Enter caption' />
                     
+                    <input onChange={(e) => { setCaption(e.target.value) }} value={Caption} type="text" name="caption" placeholder='Enter caption' />
+
                     <button className='upload_btn'>Upload</button>
-                
+
                 </form>
             </div>
 

@@ -23,9 +23,6 @@ const Login = () => {
     e.preventDefault();
 
     await loginHandler(Username, Password)
-      .then(res => {
-        console.log(res);
-      })
 
     navigate('/');
 

@@ -1,5 +1,5 @@
-import useUser from '../../../Features/user/hooks/useUser'
 import { useEffect } from 'react';
+import useUser from '../../../../Features/user/hooks/useUser';
 
 const Followings = () => {
 
@@ -13,7 +13,7 @@ const Followings = () => {
 
   function FollowingRender() {
 
-    if (Following.length === 0) return;
+    if (!Following || Following.length === 0) return;
 
     return Following.map((profile, idx) => {
       return <div key={idx} className='user_profile'>
