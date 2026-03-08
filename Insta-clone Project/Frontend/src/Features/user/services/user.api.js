@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://localhost:3900/api/user',
+    baseURL: 'https://cohort-2-0-backend-1-qit5.onrender.com/api/user',
     withCredentials: true
 })
 
