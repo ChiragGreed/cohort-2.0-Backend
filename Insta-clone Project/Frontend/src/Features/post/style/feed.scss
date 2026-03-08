@@ -26,7 +26,7 @@
     @include flex(column);
     overflow: hidden;
     margin-left: 3.7rem;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-card);
 
 
     width: 56%;
@@ -46,10 +46,11 @@
 
 .content {
     object-fit: cover;
+    background-color: var(--bg-secondary);
+
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--bg-card);
 
     img {
         max-height: 55vh;
@@ -68,7 +69,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding-inline: 0.7rem;
+    padding-inline: 1rem;
     padding-block: 0.5rem;
 
     p {
@@ -101,8 +102,8 @@
 }
 
 .post_footer {
-    padding-inline: 0.7rem;
-    padding-block: 0.5rem;
+    padding-inline: 1rem;
+    padding-block: 0.9rem;
 
     .caption {
         font-size: 0.8em;
@@ -134,5 +135,6 @@
 @media (max-width:1010px) {
     .feed {
         width: 100%;
+        margin-left: 2.1rem;
     }
 }
