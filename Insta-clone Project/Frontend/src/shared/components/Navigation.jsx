@@ -13,7 +13,7 @@ const Navigation = () => {
         <nav className='Navbar'>
 
             <div className='appLogo'>
-                <img src="/public/appLogo.png" />
+                <img src="https://ik.imagekit.io/lfqmv9rcq/Insta-clone-Posts/App-logo/appLogo.png" />
                 <h1>Sociofy</h1>
             </div>
 
