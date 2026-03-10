@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import '../style/login.scss'
+import '../style/auth.scss'
 
 const Register = () => {
 
@@ -10,11 +11,13 @@ const Register = () => {
   const [Username, setUsername] = useState('');
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   async function submitHandler(e) {
     e.preventDefault();
 
-    await RegisterHandler(Username,Email, Password);
+    await RegisterHandler(Username, Email, Password);
+    navigate('/');
 
   }
 
@@ -22,10 +25,10 @@ const Register = () => {
   return (
     <main>
 
-      <div className='login_page'>
+      <div className='register_page'>
 
         <h1>Register Page</h1>
-        <form className='login_form' onSubmit={(e) => { submitHandler(e) }}>
+        <form className='register_form' onSubmit={(e) => { submitHandler(e) }}>
 
           <input onChange={(e) => { setUsername(e.target.value) }} value={Username} required placeholder='Enter username' />
           <input onChange={(e) => { setEmail(e.target.value) }} value={Email} required placeholder='Enter email' />
@@ -34,6 +37,13 @@ const Register = () => {
           <button>Register</button>
 
         </form>
+        
+        <div className='AuthNavigate'>
+
+          <p>Already a user?</p>
+          <Link to='/login'>Login</Link>
+
+        </div>
 
       </div>
 

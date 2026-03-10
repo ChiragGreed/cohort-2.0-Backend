@@ -1,37 +1,52 @@
-.login_page{
+.login_page,
+.register_page {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap:2rem;
-    
-    h1{
-        color:white;
+    gap: 2rem;
+
+    h1 {
+        color: white;
     }
-    
-    
-    .login_form {
+
+
+    .login_form,
+    .register_form {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
         gap: 1.5rem;
-        
+
         input {
             font-size: 1.3rem;
             padding-inline: 1.9rem;
             padding-block: 0.9rem;
             border-radius: 3rem;
         }
-        
-        button{
-            font-size:1.3rem;
+
+        button {
+            font-size: 1.3rem;
             border: none;
             border-radius: 2rem;
             padding-block: 0.5rem;
             padding-inline: 2rem;
-            background-color:#f7623d;
-            color:#FFFFFF;
+            background-color: #f7623d;
+            color: #FFFFFF;
         }
     }
+    
+    .AuthNavigate{
+        display: flex;
+        color:white;
+        gap: 0.5em;
+        a{
+            color:rgb(255, 106, 0);
+            font-weight: 600;
+        }
+    
+    }
+
+
 }

@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './shared/main.scss'
+import './Features/shared/main.scss'
 import App from './App.jsx'
 import AppRoute from './AppRoute.jsx'
 import AuthContextProvider from './Features/auth/state/auth.context.jsx'

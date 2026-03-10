@@ -31,7 +31,7 @@ const Expression = () => {
       </button>
 
       <h1>Current Mood</h1>
-      <div className="mood_display">{mood}</div>
+      <p className="mood_display">{mood}</p>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../hooks/useAuth'
-import '../style/login.scss'
+import { useNavigate, Link } from 'react-router-dom'
+import '../style/auth.scss'
 
 const Login = () => {
 
@@ -9,11 +10,16 @@ const Login = () => {
 
   const [Username, setUsername] = useState('');
   const [Password, setPassword] = useState('');
+  
+  const navigate = useNavigate();
 
   async function submitHandler(e) {
     e.preventDefault();
 
     await LoginHandler(Username, Password);
+    
+    navigate('/');
+
 
   }
 
@@ -32,6 +38,13 @@ const Login = () => {
           <button>Login</button>
 
         </form>
+
+        <div className='AuthNavigate'>
+
+          <p>Don't have an account?</p>
+          <Link to='/register'>Create Account</Link>
+
+        </div>
 
       </div>
 

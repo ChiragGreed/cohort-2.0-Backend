@@ -1,12 +1,11 @@
 import { useState } from "react";
-
 import { createContext } from 'react'
 
 export const AuthContext = createContext();
 
 function AuthContextProvider({ children }) {
 
-    const [Loading, setLoading] = useState(false);
+    const [Loading, setLoading] = useState(true);
     const [User, setUser] = useState(null);
 
     return (
