@@ -76,12 +76,12 @@ export const detectMood = (videoRef, setMood, faceLandmarker) => {
         getScore(categories, "mouthFrownLeft") +
         getScore(categories, "mouthFrownRight");
 
-    if (smile > 1.0) return setMood("😊 Happy");
-    if (jawOpen > 0.7) return setMood("😮 Surprised");
-    if (browDown > 0.8) return setMood("😠 Angry");
-    if (frown > 0.001) return setMood("😢 Sad");
+    if (smile > 1.0) return setMood("happy");
+    if (jawOpen > 0.7) return setMood("surprised");
+    if (browDown > 0.8) return setMood("angry");
+    if (frown > 0.001) return setMood("sad");
 
-    setMood("😐 Neutral");
+    setMood("neutral");
 
 }
 

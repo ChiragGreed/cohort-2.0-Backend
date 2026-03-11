@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import Expression from './Features/expressions/pages/Expression'
 import Login from './Features/auth/pages/Login'
 import Register from './Features/auth/pages/Register'
 import Protected from './Features/auth/components/protected'
+import Home from './Features/Home/pages/Home'
+import Player from './Features/Home/components/player'
 
 
 const AppRoute = () => {
@@ -15,7 +16,7 @@ const AppRoute = () => {
                     path='/'
                     element=
                     <Protected>
-                        <Expression />
+                        <Home />
                     </Protected>
                 />
                 <Route

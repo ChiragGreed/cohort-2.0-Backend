@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import "../style/expression.scss";
 import { detectMood, setup } from "../utile";
 
-const Expression = () => {
+const Expression = ({ onClick = () => { } }) => {
+
+
   const videoRef = useRef(null);
   const [mood, setMood] = useState("");
   const [faceLandmarker, setFaceLandmarker] = useState(null);
@@ -11,9 +13,15 @@ const Expression = () => {
     setup(videoRef, setFaceLandmarker);
   }, []);
 
+  useEffect(() => {
+    onClick(mood);
+  }, [mood]);
+
   const handleDetect = () => {
     detectMood(videoRef, setMood, faceLandmarker);
   };
+
+
 
   return (
     <div className="expression_wrapper">
