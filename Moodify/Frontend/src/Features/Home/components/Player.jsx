@@ -124,17 +124,21 @@ const Player = () => {
                 <img className='cover' src={currentSong.coverUrl} alt={currentSong.title} />
                 <div className='track-info'>
 
-                    <div className='title_artist'>
-                        <p className='title'>{currentSong.title}</p>
-                        {currentSong.artist && <p className='artist'>{currentSong.artist}</p>}
+
+                    <div className='song_about'>
+                        <div className='title_artist'>
+                            <p className='title'>{currentSong.title}</p>
+                            {currentSong.artist && <p className='artist'>{currentSong.artist}</p>}
+                        </div>
+                        <div className='controls'>
+                            <button onClick={handlePrev} className='controlBtn'>◀</button>
+                            <button onClick={togglePlay} className='controlBtn'>
+                                {isPlaying ? '⏸' : '▶'}
+                            </button>
+                            <button onClick={handleNext} className='controlBtn'>▶</button>
+                        </div>
                     </div>
-                    <div className='controls'>
-                        <button onClick={handlePrev} className='controlBtn'>◀</button>
-                        <button onClick={togglePlay} className='controlBtn'>
-                            {isPlaying ? '⏸' : '▶'}
-                        </button>
-                        <button onClick={handleNext} className='controlBtn'>▶</button>
-                    </div>
+                    
                     <div className='progress'>
                         <input
                             type='range'

@@ -9,9 +9,8 @@ const Playlist = () => {
         setCurrentIndex(index);
         setIsPlaying(true);
     };
-    console.log(Song);
 
-    if (!Song || Song.length === 0) return ;
+    if (!Song || Song.length === 0) return <div className="playlist empty_playlist"></div> ;
 
     return (
         <div className='playlist'>
