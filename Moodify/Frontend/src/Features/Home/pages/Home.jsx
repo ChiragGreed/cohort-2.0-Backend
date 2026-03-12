@@ -9,9 +9,13 @@ const Home = () => {
 
   return (
     <div className='Home'>
+
       <Expression onClick={(mood) => songHandler(mood)} />
+
       <Player />
-      <Playlist/>
+
+      <Playlist />
+
     </div>
   )
 }

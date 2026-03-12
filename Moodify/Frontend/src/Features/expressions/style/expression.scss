@@ -16,9 +16,9 @@
     }
 
     .detect_btn {
-        background-color:#22C55E;
+        background-color: #22C55E;
         border: none;
-        color:#F1F5F9;
+        color: #F1F5F9;
         font-weight: 900;
         padding-inline: 1rem;
         padding-block: 0.5rem;
@@ -27,9 +27,55 @@
         border-radius: 1rem;
     }
 
-    p {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #E2E8F0;
+    .mood_wrapper {
+        padding-block: 0.3rem;
+        padding-inline: 0.5rem;
+        border-radius: 0.3rem;
+
+
+        p {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+    }
+
+    .happy {
+        background-color: yellow;
+
+        p {
+            color: black
+        }
+    }
+
+    .sad {
+        background-color: rgb(37, 38, 33);
+
+        p {
+            color: rgb(236, 236, 236)
+        }
+    }
+
+    .angry {
+        background-color: rgb(237, 20, 9);
+
+        p {
+            color: black
+        }
+    }
+
+    .surprised {
+        background-color: rgb(240, 240, 240);
+
+        p {
+            color: black
+        }
+    }
+
+    .neutral {
+        background-color: rgb(51, 180, 135);
+
+        p {
+            color: rgb(230, 230, 230)
+        }
     }
 }

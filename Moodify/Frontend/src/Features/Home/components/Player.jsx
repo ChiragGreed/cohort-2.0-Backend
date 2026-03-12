@@ -8,6 +8,7 @@ const Player = () => {
 
     const audioRef = useRef(null);
 
+
     const currentSong = useMemo(() => {
         if (!Song || Song.length === 0) return null;
         return Song[currentIndex] || Song[0];
@@ -108,11 +109,7 @@ const Player = () => {
 
     if (!Song || Song.length === 0) {
         return (
-            <div className='player'>
-                <div className='song'>
-                    <p>Detect your mood to get related songs.</p>
-                </div>
-            </div>
+            <></>
         );
     }
 
@@ -123,10 +120,14 @@ const Player = () => {
             <audio ref={audioRef} src={currentSong.songUrl} preload='metadata' />
 
             <div className='song'>
-              
+
                 <img className='cover' src={currentSong.coverUrl} alt={currentSong.title} />
                 <div className='track-info'>
-                    <p className='title'>{currentSong.title}</p>
+
+                    <div className='title_artist'>
+                        <p className='title'>{currentSong.title}</p>
+                        {currentSong.artist && <p className='artist'>{currentSong.artist}</p>}
+                    </div>
                     <div className='controls'>
                         <button onClick={handlePrev} className='controlBtn'>◀</button>
                         <button onClick={togglePlay} className='controlBtn'>
@@ -148,10 +149,10 @@ const Player = () => {
                         </div>
                     </div>
                 </div>
-              
+
             </div>
 
-            
+
         </div>
     );
 }

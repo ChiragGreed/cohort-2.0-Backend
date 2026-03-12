@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../style/expression.scss";
 import { detectMood, setup } from "../utile";
+import useSongs from "../../Home/hooks/useSongs";
 
 const Expression = ({ onClick = () => { } }) => {
 
+
+  const { context } = useSongs();
+  const { Loading, Song } = context;
 
   const videoRef = useRef(null);
   const [mood, setMood] = useState("");
@@ -35,12 +39,25 @@ const Expression = ({ onClick = () => { } }) => {
       />
 
       <button onClick={handleDetect} className="detect_btn">
-        Detect Mood
+        {Loading ? 'Detecting...' : 'Detect mood'}
       </button>
 
-      <h1>Current Mood</h1>
-      <p className="mood_display">{mood}</p>
-    </div>
+      {Song ?
+        <>
+          <h1>Current Mood</h1>
+
+          <div className={`mood_wrapper ${mood ? mood.toLowerCase() : ''}`}>
+            <p className="mood_display">
+              {mood ? mood.toLocaleUpperCase() : ''}
+            </p>
+
+          </div>
+        </> :
+        <></>
+      }
+
+
+    </div >
   );
 }
 

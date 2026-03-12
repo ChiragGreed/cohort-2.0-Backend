@@ -27,6 +27,7 @@ const songController = async (req, res) => {
         title: tags.title,
         songUrl: songUrl.url,
         coverUrl: coverUrl.url,
+        artist: tags.artist,
         mood
     })
 
@@ -38,7 +39,7 @@ const songController = async (req, res) => {
 }
 
 const getSongController = async (req, res) => {
-    const {mood} = req.query;
+    const { mood } = req.query;
 
     if (!mood) return res.status(400).json({
         message: "Mood value is required"
