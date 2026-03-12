@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://localhost:6010/api/songs',
+    baseURL: 'https://cohort-2-0-backend-2-nrcy.onrender.com/api/songs',
     withCredentials: true
 })
 
