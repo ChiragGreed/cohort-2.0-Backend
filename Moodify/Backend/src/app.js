@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
     credentials: true,
-    origin: 'https://cohort-2-0-backend-2-nrcy.onrender.com/'
+    origin: 'https://cohort-2-0-backend-2-nrcy.onrender.com'
 }));
 
 app.use('/api/auth/', authRoute)
