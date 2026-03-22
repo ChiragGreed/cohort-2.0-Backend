@@ -1,10 +1,12 @@
+import { createAgent, tool, HumanMessage } from "langchain";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { createAgent, HumanMessage, tool } from "langchain";
 import readline from "readline/promises";
 import * as z from 'zod'
 import 'dotenv/config'
 
 import sendEmail from "./services/emailService.js";
+import tavilySearch from "./services/tavilyService.js";
+
 
 
 const rl = readline.createInterface({
@@ -16,6 +18,8 @@ const model = new ChatGoogleGenerativeAI({
   model: "gemini-2.5-flash-lite",
   apiKey: process.env.API_KEY,
 });
+
+
 
 const emailSendTool = tool(
 
@@ -31,17 +35,37 @@ const emailSendTool = tool(
   }
 )
 
+const tavilySearchTool = tool(
+  tavilySearch,
+  {
+    name: "web_search",
+    description: `Search the internet for real-time or latest information.
+    Use this tool when:
+- question asks about current events
+- sports matches today
+- weather
+- latest news
+- current date
+- live information
+`,
+    schema: z.object({
+      query: z.string()
+    })
+
+  }
+)
+
 const agent = createAgent({
   model,
-  tools: [emailSendTool],
+  tools: [emailSendTool, tavilySearchTool],
   systemPrompt: `
 whenever you are told to send emails.
 
-Important:
+      Important:
 - Only send ONE email per user request
 - Never resend previous emails
 - Ignore previous tool calls
-`
+  `
 
 })
 

@@ -22,7 +22,7 @@ tranporter.verify((error, success) => {
 
 
 
-const sendEmail = async ({to, subject, html}) => {
+const sendEmail = async ({ to, subject, html }) => {
 
     try {
         const info = await tranporter.sendMail({
