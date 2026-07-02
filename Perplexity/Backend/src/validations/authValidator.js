@@ -10,7 +10,7 @@ export const handleValidationErrors = (req, res, next) => {
 };
 
 // Register validation rules
-export const validate = [
+export const registerValidator = [
     body('username')
         .trim()
         .isLength({ min: 3, max: 20 })
@@ -35,6 +35,43 @@ export const validate = [
         .withMessage('Password must contain at least one uppercase letter')
         .matches(/[0-9]/)
         .withMessage('Password must contain at least one number'),
+
+    handleValidationErrors
+];
+
+// Login validation rules
+export const loginValidator = [
+    body('email')
+        .trim()
+        .toLowerCase()
+        .isEmail()
+        .withMessage('Please provide a valid email address')
+        .isLength({ max: 100 })
+        .withMessage('Email must not exceed 100 characters'),
+
+    body('password')
+        .isLength({ min: 6, max: 50 })
+        .withMessage('Password must be between 6 and 50 characters')
+        .matches(/[a-z]/)
+        .withMessage('Password must contain at least one lowercase letter')
+        .matches(/[A-Z]/)
+        .withMessage('Password must contain at least one uppercase letter')
+        .matches(/[0-9]/)
+        .withMessage('Password must contain at least one number'),
+
+    handleValidationErrors
+];
+
+
+// Email validation rules
+export const emailValidator = [
+    body('email')
+        .trim()
+        .toLowerCase()
+        .isEmail()
+        .withMessage('Please provide a valid email address')
+        .isLength({ max: 100 })
+        .withMessage('Email must not exceed 100 characters'),
 
     handleValidationErrors
 ];

@@ -116,9 +116,9 @@ const resendEmail = async (req, res) => {
 
 const login = async (req, res) => {
 
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await userModel.findOne({ username }).select('+password');
+    const user = await userModel.findOne({ email }).select('+password');
 
     if (!user) return res.status(404).json({
         message: "Invalid password or username",
@@ -232,7 +232,7 @@ const verifyRegister = async (req, res) => {
 
         if (user.verified) {
             res.send(alreadyVerifiedPageHtml)
-            
+
             return res.status(200).json({
                 message: "User Already verified",
                 success: true
